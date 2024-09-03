@@ -6,6 +6,7 @@ using UnityEngine;
 public class Score : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI scoreText;
+    [SerializeField] private CanvasGroup[] blocks;
     private int score;
     private bool scoreChanged;
 
@@ -16,6 +17,7 @@ public class Score : MonoBehaviour
             WriteScore();
             scoreChanged = false;
         }
+        OpenDifficulties();
     }
 
     public void AddScore(MathQuiz quiz)
@@ -35,5 +37,19 @@ public class Score : MonoBehaviour
     private void WriteScore()
     {
         scoreText.text = "Очки: " + score.ToString();
+    }
+
+
+    /// <summary>
+    /// should this method be here?
+    /// </summary>
+    private void OpenDifficulties()
+    {
+        if (score > 900)
+        {
+            //open difficulty 2
+            blocks[0].alpha = 1;
+        }
+        //...
     }
 }

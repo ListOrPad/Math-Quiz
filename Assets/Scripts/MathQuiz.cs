@@ -7,6 +7,7 @@ using UnityEngine.UI;
 public class MathQuiz : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI exampleText;
+    [SerializeField] private FadingText fadingText;
     [SerializeField] private TMP_InputField resultText;
     [SerializeField] private Button checkButton;
     [HideInInspector] public int firstNumber;
@@ -15,7 +16,6 @@ public class MathQuiz : MonoBehaviour
     private int result;
     private Score score;
     private bool isAnswerCorrect;
-    private FadingText fadingText;
 
     private void Start()
     {
@@ -23,7 +23,6 @@ public class MathQuiz : MonoBehaviour
         WriteExample();
         checkButton.onClick.AddListener(() => clickCheckButton());
         score = GameObject.Find("Score").GetComponent<Score>();
-        fadingText = GameObject.Find("Right Wrong").GetComponent<FadingText>();
     }
 
     private void Update()
@@ -57,6 +56,7 @@ public class MathQuiz : MonoBehaviour
         }
         else
         {
+            Debug.LogWarning("Something went wrong, answer wasn't parsed");
             WriteExample();
         }
     }
@@ -64,12 +64,12 @@ public class MathQuiz : MonoBehaviour
     private void WriteExample()
     {
         //here should be logic of choosing difficulty
-        exampleText.text = GenerateExample(Difficulty.VeryEasy);
+        exampleText.text = GenerateExample();
     }
 
-    private string GenerateExample(Difficulty difficulty)
+    private string GenerateExample()
     {
-        if (difficulty == Difficulty.VeryEasy)
+        if (Difficulty.currentDifficulty == DifficultyEnum.VeryEasy)
         {
             if (randomOperation == Operation.Addition)
             {
@@ -109,7 +109,7 @@ public class MathQuiz : MonoBehaviour
                 return $"{firstNumber} : {secondNumber}";
             }
         }
-        else if (difficulty == Difficulty.Easy)
+        else if (Difficulty.currentDifficulty == DifficultyEnum.Easy)
         {
             if (randomOperation == Operation.Addition)
             {
