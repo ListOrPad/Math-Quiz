@@ -7,6 +7,7 @@ public class Score : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI scoreText;
     [SerializeField] private CanvasGroup[] blocks;
+    [SerializeField] private Canvas menuCanvas;
     private int score;
     private bool scoreChanged;
 
@@ -17,7 +18,10 @@ public class Score : MonoBehaviour
             WriteScore();
             scoreChanged = false;
         }
-        OpenDifficulties();
+        if (menuCanvas.isActiveAndEnabled == true)
+        {
+            ActivateDifficulties();
+        }
     }
 
     public void AddScore(MathQuiz quiz)
@@ -39,17 +43,32 @@ public class Score : MonoBehaviour
         scoreText.text = "Очки: " + score.ToString();
     }
 
-
-    /// <summary>
-    /// should this method be here?
-    /// </summary>
-    private void OpenDifficulties()
+    private void ActivateDifficulties()
     {
         if (score > 900)
         {
             //open difficulty 2
-            blocks[0].alpha = 1;
+            blocks[0].alpha = 0;
         }
-        //...
+        if (score > 9000)
+        {
+            //open difficulty 3
+            blocks[1].alpha = 0;
+        }
+        if (score > 150_000)
+        {
+            //open difficulty 4
+            blocks[2].alpha = 0;
+        }
+        if (score > 1_000_000)
+        {
+            //open difficulty 5
+            blocks[3].alpha = 0;
+        }
+        if (score > 9_000_000)
+        {
+            //open victory pic
+            blocks[4].alpha = 0;
+        }
     }
 }
