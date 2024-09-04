@@ -10,27 +10,34 @@ public class MathQuiz : MonoBehaviour
     [SerializeField] private FadingText fadingText;
     [SerializeField] private TMP_InputField resultText;
     [SerializeField] private Button checkButton;
+    //private Button backToMenuButton;
     [HideInInspector] public int firstNumber;
     [HideInInspector] public int secondNumber;
     [HideInInspector] public Operation randomOperation;
+    private Difficulty difficulty;
     private int result;
     private Score score;
     private bool isAnswerCorrect;
 
     private void Start()
     {
+        difficulty = GetComponent<Difficulty>();
         GetRandomOperation();
         WriteExample();
-        checkButton.onClick.AddListener(() => clickCheckButton());
+        checkButton.onClick.AddListener(() => ClickCheckButton());
         score = GameObject.Find("Score").GetComponent<Score>();
     }
 
     private void Update()
     {
-        
+        if (difficulty.DifficultyChanged)
+        {
+            WriteExample();
+            difficulty.DifficultyChanged = false;
+        }
     }
 
-    private void clickCheckButton()
+    private void ClickCheckButton()
     {
         int userAnswer;
 
@@ -56,14 +63,12 @@ public class MathQuiz : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning("Something went wrong, answer wasn't parsed");
-            WriteExample();
+            Debug.LogWarning("Write answer first");
         }
     }
 
     private void WriteExample()
     {
-        //here should be logic of choosing difficulty
         exampleText.text = GenerateExample();
     }
 
@@ -151,6 +156,132 @@ public class MathQuiz : MonoBehaviour
                 return $"{firstNumber} : {secondNumber}";
             }
         }
+        else if (Difficulty.currentDifficulty == DifficultyEnum.Normal)
+        {
+            if (randomOperation == Operation.Addition)
+            {
+                firstNumber = Random.Range(100, 1000);
+                secondNumber = Random.Range(100, 1000);
+
+                result = firstNumber + secondNumber;
+                return $"{firstNumber} + {secondNumber}";
+            }
+            else if (randomOperation == Operation.Subtraction)
+            {
+                do
+                {
+                    firstNumber = Random.Range(100, 1000);
+                    secondNumber = Random.Range(100, 1000);
+                }
+                while (firstNumber < secondNumber);
+
+                result = firstNumber - secondNumber;
+                return $"{firstNumber} - {secondNumber}";
+            }
+            else if (randomOperation == Operation.Multiplication)
+            {
+                firstNumber = Random.Range(0, 10);
+                secondNumber = Random.Range(100, 1000);
+
+                result = firstNumber * secondNumber;
+                return $"{firstNumber} x {secondNumber}";
+            }
+            else if (randomOperation == Operation.Division)
+            {
+                System.Random random = new System.Random();
+                // Generate a number in the range of 0 to 99 that is divisible by 5
+                int multipleOfFive = random.Next(100, 200); // Generates a number between 100 and 199
+                firstNumber = multipleOfFive * 5;
+                secondNumber = 5;
+
+                result = firstNumber / secondNumber;
+                return $"{firstNumber} : {secondNumber}";
+            }
+        }
+        else if (Difficulty.currentDifficulty == DifficultyEnum.Hard)
+        {
+            if (randomOperation == Operation.Addition)
+            {
+                firstNumber = Random.Range(1000, 10000);
+                secondNumber = Random.Range(1000, 10000);
+
+                result = firstNumber + secondNumber;
+                return $"{firstNumber} + {secondNumber}";
+            }
+            else if (randomOperation == Operation.Subtraction)
+            {
+                do
+                {
+                    firstNumber = Random.Range(1000, 10000);
+                    secondNumber = Random.Range(1000, 10000);
+                }
+                while (firstNumber < secondNumber);
+
+                result = firstNumber - secondNumber;
+                return $"{firstNumber} - {secondNumber}";
+            }
+            else if (randomOperation == Operation.Multiplication)
+            {
+                firstNumber = Random.Range(0, 10);
+                secondNumber = Random.Range(1000, 10000);
+
+                result = firstNumber * secondNumber;
+                return $"{firstNumber} x {secondNumber}";
+            }
+            else if (randomOperation == Operation.Division)
+            {
+                System.Random random = new System.Random();
+                // Generate a number in the range of 0 to 99 that is divisible by 5
+                int multipleOfFive = random.Next(1000, 2000); // Generates a number between 1000 and 1999
+                firstNumber = multipleOfFive * 5;
+                secondNumber = 5;
+
+                result = firstNumber / secondNumber;
+                return $"{firstNumber} : {secondNumber}";
+            }
+        }
+        else if (Difficulty.currentDifficulty == DifficultyEnum.VeryHard)
+        {
+            if (randomOperation == Operation.Addition)
+            {
+                firstNumber = Random.Range(10000, 100000);
+                secondNumber = Random.Range(10000, 100000);
+
+                result = firstNumber + secondNumber;
+                return $"{firstNumber} + {secondNumber}";
+            }
+            else if (randomOperation == Operation.Subtraction)
+            {
+                do
+                {
+                    firstNumber = Random.Range(10000, 100000);
+                    secondNumber = Random.Range(10000, 100000);
+                }
+                while (firstNumber < secondNumber);
+
+                result = firstNumber - secondNumber;
+                return $"{firstNumber} - {secondNumber}";
+            }
+            else if (randomOperation == Operation.Multiplication)
+            {
+                firstNumber = Random.Range(0, 10);
+                secondNumber = Random.Range(10000, 100000);
+
+                result = firstNumber * secondNumber;
+                return $"{firstNumber} x {secondNumber}";
+            }
+            else if (randomOperation == Operation.Division)
+            {
+                System.Random random = new System.Random();
+                // Generate a number in the range of 0 to 99 that is divisible by 5
+                int multipleOfFive = random.Next(10000, 20000); // Generates a number between 10000 and 19999
+                firstNumber = multipleOfFive * 5;
+                secondNumber = 5;
+
+                result = firstNumber / secondNumber;
+                return $"{firstNumber} : {secondNumber}";
+            }
+        }
         return "something went wrong";
     }
 
@@ -160,6 +291,4 @@ public class MathQuiz : MonoBehaviour
         int randomValue = random.Next(0, 4); // Generates a number between 0 and 3
         randomOperation = (Operation)randomValue;
     }
-
-
 }

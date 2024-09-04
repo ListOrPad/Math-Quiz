@@ -385,7 +385,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &256169848
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -541,7 +541,7 @@ MonoBehaviour:
   m_Color: {r: 0, g: 0, b: 0, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
+  m_Maskable: 0
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -1038,7 +1038,7 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 419530033}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -1489,6 +1489,7 @@ GameObject:
   m_Component:
   - component: {fileID: 597031784}
   - component: {fileID: 597031783}
+  - component: {fileID: 597031785}
   m_Layer: 0
   m_Name: Game
   m_TagString: Untagged
@@ -1530,6 +1531,24 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &597031785
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 597031782}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e6bae10082a0ad54cb6d37ae57f7cbd9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  difficultyButtons:
+  - {fileID: 1279594518}
+  - {fileID: 1976500372}
+  - {fileID: 384561990}
+  - {fileID: 325078814}
+  - {fileID: 749267754}
 --- !u!1 &655392831
 GameObject:
   m_ObjectHideFlags: 0
@@ -1624,8 +1643,8 @@ RectTransform:
   m_LocalScale: {x: 0, y: 0, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 1525756536}
   - {fileID: 256169851}
+  - {fileID: 1525756536}
   - {fileID: 1906993155}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -3274,9 +3293,9 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 1976500371}
   - {fileID: 1029385420}
   - {fileID: 1673487629}
+  - {fileID: 1976500371}
   m_Father: {fileID: 1697043456}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
@@ -4708,7 +4727,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_text: "\u041D\u0443\u0436\u043D\u043E \u041E\u0447\u043A\u043E\u0432 \u0434\u043B\u044F
-    \u043E\u0442\u043A\u0440\u044B\u0442\u0438\u044F: 250"
+    \u043E\u0442\u043A\u0440\u044B\u0442\u0438\u044F: 500"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 77d42e6755f92b94eb81e891a33aa305, type: 2}
   m_sharedMaterial: {fileID: -1590953967015829064, guid: 77d42e6755f92b94eb81e891a33aa305, type: 2}
