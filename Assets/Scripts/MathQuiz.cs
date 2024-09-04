@@ -10,7 +10,7 @@ public class MathQuiz : MonoBehaviour
     [SerializeField] private FadingText fadingText;
     [SerializeField] private TMP_InputField resultText;
     [SerializeField] private Button checkButton;
-    //private Button backToMenuButton;
+    [SerializeField] private Button backToMenuButton;
     [HideInInspector] public int firstNumber;
     [HideInInspector] public int secondNumber;
     [HideInInspector] public Operation randomOperation;
@@ -26,6 +26,7 @@ public class MathQuiz : MonoBehaviour
         WriteExample();
         checkButton.onClick.AddListener(() => ClickCheckButton());
         score = GameObject.Find("Score").GetComponent<Score>();
+        backToMenuButton.onClick.AddListener(() => ReturnToMainMenu());
     }
 
     private void Update()
@@ -290,5 +291,10 @@ public class MathQuiz : MonoBehaviour
         System.Random random = new System.Random();
         int randomValue = random.Next(0, 4); // Generates a number between 0 and 3
         randomOperation = (Operation)randomValue;
+    }
+
+    private void ReturnToMainMenu()
+    {
+        difficulty.menuCanvas.transform.SetSiblingIndex(1);
     }
 }

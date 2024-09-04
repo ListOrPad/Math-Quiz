@@ -5,7 +5,7 @@ public class Difficulty : MonoBehaviour
 {
     public static DifficultyEnum currentDifficulty;
     [SerializeField] private Button[] difficultyButtons;
-    private Canvas menuCanvas;
+    [HideInInspector] public Canvas menuCanvas;
     public bool DifficultyChanged { get; set; }
 
     private void Start()
