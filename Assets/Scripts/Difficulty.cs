@@ -11,7 +11,7 @@ public class Difficulty : MonoBehaviour
     private void Start()
     {
         menuCanvas = GameObject.Find("Choose Difficulty Menu(Canvas)").GetComponent<Canvas>();
-        currentDifficulty = DifficultyEnum.VeryEasy;
+        currentDifficulty = DifficultyEnum.VeryEasy; //maybe delete this line?
         for (int i = 0; i < difficultyButtons.Length; i++)
         {
             int capturedIndex = i;

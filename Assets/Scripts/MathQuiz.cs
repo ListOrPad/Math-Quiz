@@ -15,13 +15,17 @@ public class MathQuiz : MonoBehaviour
     [HideInInspector] public int secondNumber;
     [HideInInspector] public Operation randomOperation;
     private Difficulty difficulty;
+    private string example;
     private int result;
     private Score score;
     private bool isAnswerCorrect;
+    private bool exampleWasSolved;
+    private ExampleCache cache = new ExampleCache();
 
     private void Start()
     {
         difficulty = GetComponent<Difficulty>();
+        exampleWasSolved = wasExampleSolved(true);
         GetRandomOperation();
         WriteExample();
         checkButton.onClick.AddListener(() => ClickCheckButton());
@@ -52,6 +56,7 @@ public class MathQuiz : MonoBehaviour
                 WriteExample();
                 isAnswerCorrect = true;
                 StartCoroutine(fadingText.WriteRightOrWrong(isAnswerCorrect));
+                exampleWasSolved = wasExampleSolved(true);
                 Debug.Log("Correct answer!");
             }
             else
@@ -59,6 +64,7 @@ public class MathQuiz : MonoBehaviour
                 // Code to execute if the answer is incorrect
                 isAnswerCorrect = false;
                 StartCoroutine(fadingText.WriteRightOrWrong(isAnswerCorrect));
+                exampleWasSolved = wasExampleSolved(false);
                 Debug.Log("Incorrect answer!");
             }
         }
@@ -70,7 +76,14 @@ public class MathQuiz : MonoBehaviour
 
     private void WriteExample()
     {
-        exampleText.text = GenerateExample();
+        if(exampleWasSolved)
+        {
+            exampleText.text = GenerateExample();
+        }
+        else
+        {
+            exampleText.text = KeepPreviousExample();
+        }
     }
 
     private string GenerateExample()
@@ -83,7 +96,9 @@ public class MathQuiz : MonoBehaviour
                 secondNumber = Random.Range(0, 10);
 
                 result = firstNumber + secondNumber;
-                return $"{firstNumber} + {secondNumber}";
+                example = $"{firstNumber} + {secondNumber}";
+                cache.CacheExample(example, result);
+                return example;
             }
             else if (randomOperation == Operation.Subtraction)
             {
@@ -95,7 +110,9 @@ public class MathQuiz : MonoBehaviour
                 while (firstNumber < secondNumber);
 
                 result = firstNumber - secondNumber;
-                return $"{firstNumber} - {secondNumber}";
+                example = $"{firstNumber} - {secondNumber}";
+                cache.CacheExample(example, result);
+                return example;
             }
             else if (randomOperation == Operation.Multiplication)
             {
@@ -103,7 +120,9 @@ public class MathQuiz : MonoBehaviour
                 secondNumber = Random.Range(0, 10);
 
                 result = firstNumber * secondNumber;
-                return $"{firstNumber} x {secondNumber}";
+                example = $"{firstNumber} x {secondNumber}";
+                cache.CacheExample(example, result);
+                return example;
             }
             else if (randomOperation == Operation.Division)
             {
@@ -112,7 +131,9 @@ public class MathQuiz : MonoBehaviour
                 secondNumber = 5;
 
                 result = firstNumber / secondNumber;
-                return $"{firstNumber} : {secondNumber}";
+                example = $"{firstNumber} : {secondNumber}";
+                cache.CacheExample(example, result);
+                return example;
             }
         }
         else if (Difficulty.currentDifficulty == DifficultyEnum.Easy)
@@ -123,7 +144,9 @@ public class MathQuiz : MonoBehaviour
                 secondNumber = Random.Range(10, 100);
 
                 result = firstNumber + secondNumber;
-                return $"{firstNumber} + {secondNumber}";
+                example = $"{firstNumber} + {secondNumber}";
+                cache.CacheExample(example, result);
+                return example;
             }
             else if (randomOperation == Operation.Subtraction)
             {
@@ -135,7 +158,9 @@ public class MathQuiz : MonoBehaviour
                 while (firstNumber < secondNumber);
 
                 result = firstNumber - secondNumber;
-                return $"{firstNumber} - {secondNumber}";
+                example = $"{firstNumber} - {secondNumber}";
+                cache.CacheExample(example, result);
+                return example;
             }
             else if (randomOperation == Operation.Multiplication)
             {
@@ -143,7 +168,9 @@ public class MathQuiz : MonoBehaviour
                 secondNumber = Random.Range(10, 100);
 
                 result = firstNumber * secondNumber;
-                return $"{firstNumber} x {secondNumber}";
+                example = $"{firstNumber} x {secondNumber}";
+                cache.CacheExample(example, result);
+                return example;
             }
             else if (randomOperation == Operation.Division)
             {
@@ -154,7 +181,9 @@ public class MathQuiz : MonoBehaviour
                 secondNumber = 5;
 
                 result = firstNumber / secondNumber;
-                return $"{firstNumber} : {secondNumber}";
+                example = $"{firstNumber} : {secondNumber}";
+                cache.CacheExample(example, result);
+                return example;
             }
         }
         else if (Difficulty.currentDifficulty == DifficultyEnum.Normal)
@@ -165,7 +194,9 @@ public class MathQuiz : MonoBehaviour
                 secondNumber = Random.Range(100, 1000);
 
                 result = firstNumber + secondNumber;
-                return $"{firstNumber} + {secondNumber}";
+                example = $"{firstNumber} + {secondNumber}";
+                cache.CacheExample(example, result);
+                return example;
             }
             else if (randomOperation == Operation.Subtraction)
             {
@@ -177,7 +208,9 @@ public class MathQuiz : MonoBehaviour
                 while (firstNumber < secondNumber);
 
                 result = firstNumber - secondNumber;
-                return $"{firstNumber} - {secondNumber}";
+                example = $"{firstNumber} - {secondNumber}";
+                cache.CacheExample(example, result);
+                return example;
             }
             else if (randomOperation == Operation.Multiplication)
             {
@@ -185,7 +218,9 @@ public class MathQuiz : MonoBehaviour
                 secondNumber = Random.Range(100, 1000);
 
                 result = firstNumber * secondNumber;
-                return $"{firstNumber} x {secondNumber}";
+                example = $"{firstNumber} x {secondNumber}";
+                cache.CacheExample(example, result);
+                return example;
             }
             else if (randomOperation == Operation.Division)
             {
@@ -196,7 +231,9 @@ public class MathQuiz : MonoBehaviour
                 secondNumber = 5;
 
                 result = firstNumber / secondNumber;
-                return $"{firstNumber} : {secondNumber}";
+                example = $"{firstNumber} : {secondNumber}";
+                cache.CacheExample(example, result);
+                return example;
             }
         }
         else if (Difficulty.currentDifficulty == DifficultyEnum.Hard)
@@ -207,7 +244,9 @@ public class MathQuiz : MonoBehaviour
                 secondNumber = Random.Range(1000, 10000);
 
                 result = firstNumber + secondNumber;
-                return $"{firstNumber} + {secondNumber}";
+                example = $"{firstNumber} + {secondNumber}";
+                cache.CacheExample(example, result);
+                return example;
             }
             else if (randomOperation == Operation.Subtraction)
             {
@@ -219,7 +258,9 @@ public class MathQuiz : MonoBehaviour
                 while (firstNumber < secondNumber);
 
                 result = firstNumber - secondNumber;
-                return $"{firstNumber} - {secondNumber}";
+                example = $"{firstNumber} - {secondNumber}";
+                cache.CacheExample(example, result);
+                return example;
             }
             else if (randomOperation == Operation.Multiplication)
             {
@@ -227,7 +268,9 @@ public class MathQuiz : MonoBehaviour
                 secondNumber = Random.Range(1000, 10000);
 
                 result = firstNumber * secondNumber;
-                return $"{firstNumber} x {secondNumber}";
+                example = $"{firstNumber} x {secondNumber}";
+                cache.CacheExample(example, result);
+                return example;
             }
             else if (randomOperation == Operation.Division)
             {
@@ -238,7 +281,9 @@ public class MathQuiz : MonoBehaviour
                 secondNumber = 5;
 
                 result = firstNumber / secondNumber;
-                return $"{firstNumber} : {secondNumber}";
+                example = $"{firstNumber} : {secondNumber}";
+                cache.CacheExample(example, result);
+                return example;
             }
         }
         else if (Difficulty.currentDifficulty == DifficultyEnum.VeryHard)
@@ -249,7 +294,9 @@ public class MathQuiz : MonoBehaviour
                 secondNumber = Random.Range(10000, 100000);
 
                 result = firstNumber + secondNumber;
-                return $"{firstNumber} + {secondNumber}";
+                example = $"{firstNumber} + {secondNumber}";
+                cache.CacheExample(example, result);
+                return example;
             }
             else if (randomOperation == Operation.Subtraction)
             {
@@ -261,7 +308,9 @@ public class MathQuiz : MonoBehaviour
                 while (firstNumber < secondNumber);
 
                 result = firstNumber - secondNumber;
-                return $"{firstNumber} - {secondNumber}";
+                example = $"{firstNumber} - {secondNumber}";
+                cache.CacheExample(example, result);
+                return example;
             }
             else if (randomOperation == Operation.Multiplication)
             {
@@ -269,7 +318,9 @@ public class MathQuiz : MonoBehaviour
                 secondNumber = Random.Range(10000, 100000);
 
                 result = firstNumber * secondNumber;
-                return $"{firstNumber} x {secondNumber}";
+                example = $"{firstNumber} x {secondNumber}";
+                cache.CacheExample(example, result);
+                return example;
             }
             else if (randomOperation == Operation.Division)
             {
@@ -280,10 +331,47 @@ public class MathQuiz : MonoBehaviour
                 secondNumber = 5;
 
                 result = firstNumber / secondNumber;
-                return $"{firstNumber} : {secondNumber}";
+                example = $"{firstNumber} : {secondNumber}";
+                cache.CacheExample(example, result);
+                return example;
             }
         }
         return "something went wrong";
+    }
+    
+    private string KeepPreviousExample()
+    {
+        if (Difficulty.currentDifficulty == DifficultyEnum.VeryEasy)
+        {
+            result = cache.CachedResult[0];
+            example = cache.CachedExample[0];
+            return example;
+        }
+        else if (Difficulty.currentDifficulty == DifficultyEnum.Easy)
+        {
+            result = cache.CachedResult[1];
+            example = cache.CachedExample[1];
+            return example;
+        }
+        else if (Difficulty.currentDifficulty == DifficultyEnum.Normal)
+        {
+            result = cache.CachedResult[2];
+            example = cache.CachedExample[2];
+            return example;
+        }
+        else if (Difficulty.currentDifficulty == DifficultyEnum.Hard)
+        {
+            result = cache.CachedResult[3];
+            example = cache.CachedExample[3];
+            return example;
+        }
+        else if (Difficulty.currentDifficulty == DifficultyEnum.VeryHard)
+        {
+            result = cache.CachedResult[4];
+            example = cache.CachedExample[4];
+            return example;
+        }
+        return "Something went wrong";
     }
 
     private void GetRandomOperation()
@@ -296,5 +384,36 @@ public class MathQuiz : MonoBehaviour
     private void ReturnToMainMenu()
     {
         difficulty.menuCanvas.transform.SetSiblingIndex(1);
+        exampleWasSolved = wasExampleSolved(false);
+    }
+
+    private bool wasExampleSolved(bool solved)
+    {
+        if (solved && Difficulty.currentDifficulty == DifficultyEnum.VeryEasy)
+        {
+            cache.exampleWasSolved[0] = true;
+            return true;
+        }
+        else if (solved && Difficulty.currentDifficulty == DifficultyEnum.Easy)
+        {
+            cache.exampleWasSolved[1] = true;
+            return true;
+        }
+        else if (solved && Difficulty.currentDifficulty == DifficultyEnum.Normal)
+        {
+            cache.exampleWasSolved[2] = true;
+            return true;
+        }
+        else if (solved && Difficulty.currentDifficulty == DifficultyEnum.Hard)
+        {
+            cache.exampleWasSolved[3] = true;
+            return true;
+        }
+        else if (solved && Difficulty.currentDifficulty == DifficultyEnum.VeryHard)
+        {
+            cache.exampleWasSolved[4] = true;
+            return true;
+        }
+        return false;
     }
 }
