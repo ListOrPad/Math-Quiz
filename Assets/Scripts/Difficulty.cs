@@ -4,6 +4,7 @@ using UnityEngine.UI;
 public class Difficulty : MonoBehaviour
 {
     public static DifficultyEnum currentDifficulty;
+    public DifficultyEnum PreviousDifficulty { get; set; }
     [SerializeField] private Button[] difficultyButtons;
     [HideInInspector] public Canvas menuCanvas;
     public bool DifficultyChanged { get; set; }

@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -19,13 +17,12 @@ public class MathQuiz : MonoBehaviour
     private int result;
     private Score score;
     private bool isAnswerCorrect;
-    private bool exampleWasSolved;
     private ExampleCache cache = new ExampleCache();
 
     private void Start()
     {
         difficulty = GetComponent<Difficulty>();
-        exampleWasSolved = wasExampleSolved(true);
+        difficulty.PreviousDifficulty = DifficultyEnum.VeryEasy;
         GetRandomOperation();
         WriteExample();
         checkButton.onClick.AddListener(() => ClickCheckButton());
@@ -45,18 +42,22 @@ public class MathQuiz : MonoBehaviour
     private void ClickCheckButton()
     {
         int userAnswer;
+        int difficultyIndex = (int)Difficulty.currentDifficulty;
 
         if (int.TryParse(resultText.text, out userAnswer))
         {
             if (userAnswer == result)
             {
-                // Code to execute if the answer is correct
+                // Mark the example as solved
+                cache.exampleSolved[difficultyIndex] = true;
+                isAnswerCorrect = true;
+
+                // Generate a new example after solving
                 score.AddScore(this);
                 GetRandomOperation();
                 WriteExample();
-                isAnswerCorrect = true;
+
                 StartCoroutine(fadingText.WriteRightOrWrong(isAnswerCorrect));
-                exampleWasSolved = wasExampleSolved(true);
                 Debug.Log("Correct answer!");
             }
             else
@@ -64,7 +65,6 @@ public class MathQuiz : MonoBehaviour
                 // Code to execute if the answer is incorrect
                 isAnswerCorrect = false;
                 StartCoroutine(fadingText.WriteRightOrWrong(isAnswerCorrect));
-                exampleWasSolved = wasExampleSolved(false);
                 Debug.Log("Incorrect answer!");
             }
         }
@@ -76,13 +76,17 @@ public class MathQuiz : MonoBehaviour
 
     private void WriteExample()
     {
-        if(exampleWasSolved)
+        int difficultyIndex = (int)Difficulty.currentDifficulty;
+
+        // Check if an example has been generated and not solved yet
+        if (cache.exampleGenerated[difficultyIndex] && !cache.exampleSolved[difficultyIndex])
         {
-            exampleText.text = GenerateExample();
+            exampleText.text = KeepPreviousExample();
         }
         else
         {
-            exampleText.text = KeepPreviousExample();
+            exampleText.text = GenerateExample();
+            cache.exampleGenerated[difficultyIndex] = true; // Mark that an example has been generated
         }
     }
 
@@ -384,36 +388,9 @@ public class MathQuiz : MonoBehaviour
     private void ReturnToMainMenu()
     {
         difficulty.menuCanvas.transform.SetSiblingIndex(1);
-        exampleWasSolved = wasExampleSolved(false);
-    }
 
-    private bool wasExampleSolved(bool solved)
-    {
-        if (solved && Difficulty.currentDifficulty == DifficultyEnum.VeryEasy)
-        {
-            cache.exampleWasSolved[0] = true;
-            return true;
-        }
-        else if (solved && Difficulty.currentDifficulty == DifficultyEnum.Easy)
-        {
-            cache.exampleWasSolved[1] = true;
-            return true;
-        }
-        else if (solved && Difficulty.currentDifficulty == DifficultyEnum.Normal)
-        {
-            cache.exampleWasSolved[2] = true;
-            return true;
-        }
-        else if (solved && Difficulty.currentDifficulty == DifficultyEnum.Hard)
-        {
-            cache.exampleWasSolved[3] = true;
-            return true;
-        }
-        else if (solved && Difficulty.currentDifficulty == DifficultyEnum.VeryHard)
-        {
-            cache.exampleWasSolved[4] = true;
-            return true;
-        }
-        return false;
+        int difficultyIndex = (int)Difficulty.currentDifficulty;
+
+        cache.exampleSolved[difficultyIndex] = false;
     }
 }

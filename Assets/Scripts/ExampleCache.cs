@@ -6,8 +6,8 @@ public class ExampleCache
 {
     public string[] CachedExample { get; private set; } = new string[5];
     public int[] CachedResult { get; private set; } = new int[5];
-    public bool[] exampleWasSolved { get; private set; } = new bool[5];
-
+    public bool[] exampleGenerated { get; set; } = new bool[5]; // Track if an example has been generated for each difficulty
+    public bool[] exampleSolved { get; set; } = new bool[5]; // Track if the example for each difficulty has been solved
 
     public void CacheExample(string example, int result)
     {
