@@ -63,14 +63,14 @@ public class MathQuiz : MonoBehaviour
                 GetRandomOperation();
                 WriteExample();
 
-                StartCoroutine(fadingText.WriteRightOrWrong(isAnswerCorrect, this));
+                StartCoroutine(fadingText.WriteRightOrWrong(isAnswerCorrect));
                 Debug.Log("Correct answer!");
             }
             else
             {
                 // Code to execute if the answer is incorrect
                 isAnswerCorrect = false;
-                StartCoroutine(fadingText.WriteRightOrWrong(isAnswerCorrect, this));
+                StartCoroutine(fadingText.WriteRightOrWrong(isAnswerCorrect));
                 Debug.Log("Incorrect answer!");
             }
         }
@@ -408,6 +408,10 @@ public class MathQuiz : MonoBehaviour
     private void SkipExample()
     {
         ExampleSkipped = true;
+        score.AddScore(this);
+        int previousResult = result;
+        GetRandomOperation();
         WriteExample();
+        StartCoroutine(fadingText.WriteRightOrWrong(this, previousResult));
     }
 }
