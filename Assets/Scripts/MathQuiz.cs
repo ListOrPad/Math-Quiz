@@ -14,10 +14,14 @@ public class MathQuiz : MonoBehaviour
     [HideInInspector] public Operation randomOperation;
     private Difficulty difficulty;
     private string example;
-    private int result;
+    public int result { get; set; }
     private Score score;
     private bool isAnswerCorrect;
     private ExampleCache cache = new ExampleCache();
+
+    //skipping example(maybe create script smth like "RevAd"?)
+    public bool ExampleSkipped { get; set; }
+    private Button skipButton;
 
     private void Start()
     {
@@ -28,6 +32,8 @@ public class MathQuiz : MonoBehaviour
         checkButton.onClick.AddListener(() => ClickCheckButton());
         score = GameObject.Find("Score").GetComponent<Score>();
         backToMenuButton.onClick.AddListener(() => ReturnToMainMenu());
+        skipButton = GameObject.Find("Skip Button").GetComponent<Button>();
+        skipButton.onClick.AddListener(() => SkipExample());
     }
 
     private void Update()
@@ -57,14 +63,14 @@ public class MathQuiz : MonoBehaviour
                 GetRandomOperation();
                 WriteExample();
 
-                StartCoroutine(fadingText.WriteRightOrWrong(isAnswerCorrect));
+                StartCoroutine(fadingText.WriteRightOrWrong(isAnswerCorrect, this));
                 Debug.Log("Correct answer!");
             }
             else
             {
                 // Code to execute if the answer is incorrect
                 isAnswerCorrect = false;
-                StartCoroutine(fadingText.WriteRightOrWrong(isAnswerCorrect));
+                StartCoroutine(fadingText.WriteRightOrWrong(isAnswerCorrect, this));
                 Debug.Log("Incorrect answer!");
             }
         }
@@ -79,7 +85,12 @@ public class MathQuiz : MonoBehaviour
         int difficultyIndex = (int)Difficulty.currentDifficulty;
 
         // Check if an example has been generated and not solved yet
-        if (cache.exampleGenerated[difficultyIndex] && !cache.exampleSolved[difficultyIndex])
+        if (ExampleSkipped)
+        {
+            exampleText.text = GenerateExample();
+            cache.exampleGenerated[difficultyIndex] = true; // Mark that an example has been generated
+        }
+        else if (cache.exampleGenerated[difficultyIndex] && !cache.exampleSolved[difficultyIndex])
         {
             exampleText.text = KeepPreviousExample();
         }
@@ -392,5 +403,11 @@ public class MathQuiz : MonoBehaviour
         int difficultyIndex = (int)Difficulty.currentDifficulty;
 
         cache.exampleSolved[difficultyIndex] = false;
+    }
+
+    private void SkipExample()
+    {
+        ExampleSkipped = true;
+        WriteExample();
     }
 }

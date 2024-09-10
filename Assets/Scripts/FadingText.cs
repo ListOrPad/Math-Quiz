@@ -7,7 +7,7 @@ public class FadingText : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI rightWrongText;
 
-    public IEnumerator WriteRightOrWrong(bool answerCorrect)
+    public IEnumerator WriteRightOrWrong(bool answerCorrect, MathQuiz quiz)
     {
         if (answerCorrect)
         {
@@ -18,6 +18,11 @@ public class FadingText : MonoBehaviour
         {
             rightWrongText.text = "неправильно";
             rightWrongText.color = new Color32(255, 17, 0, 255);
+        }
+        if (quiz.ExampleSkipped)
+        {
+            rightWrongText.text = $"правильный ответ: {quiz.result}";
+            quiz.ExampleSkipped = false;
         }
 
         yield return new WaitForSeconds(3);
