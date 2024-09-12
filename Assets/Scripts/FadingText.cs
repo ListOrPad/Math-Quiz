@@ -6,18 +6,40 @@ using UnityEngine;
 public class FadingText : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI rightWrongText;
+    private Localization localization;
+
+    private void Start()
+    {
+        localization = GameObject.Find("Game").GetComponent<Localization>();
+    }
 
     public IEnumerator WriteRightOrWrong(bool answerCorrect)
     {
         if (answerCorrect)
         {
-            rightWrongText.text = "правильно";
+            if (localization.CurrentLang == "ru")
+            {
+                rightWrongText.text = "правильно";
+            }
+            else
+            {
+                rightWrongText.text = "correct";
+
+            }
             rightWrongText.color = new Color32(131, 255, 0, 255);
             rightWrongText.fontSize = 200;
         }
         else if (!answerCorrect)
         {
-            rightWrongText.text = "неправильно";
+            if (localization.CurrentLang == "ru")
+            {
+                rightWrongText.text = "неправильно";
+            }
+            else
+            {
+                rightWrongText.text = "wrong";
+
+            }
             rightWrongText.color = new Color32(255, 17, 0, 255);
             rightWrongText.fontSize = 200;
         }
@@ -29,7 +51,14 @@ public class FadingText : MonoBehaviour
 
         if (quiz.ExampleSkipped)
         {
-            rightWrongText.text = $"правильный ответ: {previousResult}";
+            if (localization.CurrentLang == "ru")
+            {
+                rightWrongText.text = $"правильный ответ: {previousResult}";
+            }
+            else
+            {
+                rightWrongText.text = $"the answer is: {previousResult}";
+            }
             rightWrongText.color = new Color(1,1,1,1);
             rightWrongText.fontSize = 100;
             quiz.ExampleSkipped = false;

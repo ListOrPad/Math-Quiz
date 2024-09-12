@@ -8,8 +8,14 @@ public class Score : MonoBehaviour
     [SerializeField] private TextMeshProUGUI scoreText;
     [SerializeField] private CanvasGroup[] blocks;
     [SerializeField] private Canvas menuCanvas;
+    private Localization localization;
     public int ScoreCount { get; set; }
     public bool ScoreChanged { get; set; }
+
+    private void Start()
+    {
+        localization = GameObject.Find("Game").GetComponent<Localization>();
+    }
 
     private void Update()
     {
@@ -22,6 +28,11 @@ public class Score : MonoBehaviour
         if (menuCanvas.isActiveAndEnabled == true)
         {
             ActivateDifficulties();
+        }
+        if(localization.LangChanged == true)
+        {
+            WriteScore();
+            localization.LangChanged = false;
         }
     }
 
@@ -41,7 +52,14 @@ public class Score : MonoBehaviour
 
     private void WriteScore()
     {
-        scoreText.text = "Очки: " + ScoreCount.ToString();
+        if (localization.CurrentLang == "ru")
+        {
+            scoreText.text = "Очки: " + ScoreCount.ToString();
+        }
+        else
+        {
+            scoreText.text = "Score: " + ScoreCount.ToString();
+        }
     }
 
     private void ActivateDifficulties()

@@ -6,17 +6,18 @@ public class Localization : MonoBehaviour
 {
     [SerializeField] private Button ruLanguageButton;
     [SerializeField] private Button enLanguageButton;
-    private string currentLang;
+    public string CurrentLang { get; private set; }
+    public bool LangChanged { get; set; }
 
     private void Start()
     {
-        currentLang = YandexGame.lang;
+        CurrentLang = YandexGame.lang;
         UpdateLanguageButton();
     }
 
     private void UpdateLanguageButton()
     {
-        if (currentLang == "en")
+        if (CurrentLang == "en")
         {
             enLanguageButton.gameObject.SetActive(true);
             ruLanguageButton.gameObject.SetActive(false);
@@ -31,10 +32,11 @@ public class Localization : MonoBehaviour
     //on language button click
     public void ChangeLanguageButton()
     {
-        if (currentLang != YandexGame.lang)
+        if (CurrentLang != YandexGame.lang)
         {
-            currentLang = YandexGame.lang;
+            CurrentLang = YandexGame.lang;
             UpdateLanguageButton();
+            LangChanged = true;
         }
     }
 }
