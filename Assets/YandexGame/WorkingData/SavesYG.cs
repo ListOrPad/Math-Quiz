@@ -12,7 +12,7 @@ namespace YG
 
         // Ваши сохранения
 
-        public int score = 0;
+        public int Score = 0;
 
         // Вы можете выполнить какие то действия при загрузке сохранений
         public SavesYG()

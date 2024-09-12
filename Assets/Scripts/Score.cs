@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using YG;
 
 public class Score : MonoBehaviour
 {
@@ -9,11 +10,14 @@ public class Score : MonoBehaviour
     [SerializeField] private CanvasGroup[] blocks;
     [SerializeField] private Canvas menuCanvas;
     private Localization localization;
+    private LBPlayerDataYG LBPlayerData;
     public int ScoreCount { get; set; }
     public bool ScoreChanged { get; set; }
+    private int previousRecord;
 
     private void Start()
     {
+        previousRecord = int.Parse(LBPlayerData.data.score);
         localization = GameObject.Find("Game").GetComponent<Localization>();
     }
 
@@ -47,6 +51,12 @@ public class Score : MonoBehaviour
         {
             ScoreCount += quiz.firstNumber + quiz.secondNumber;
             ScoreChanged = true;
+        }
+        //Adding score to the leaderboard
+        if(previousRecord < ScoreCount)
+        {
+            previousRecord = ScoreCount;
+            YandexGame.NewLeaderboardScores("Score", ScoreCount);
         }
     }
 

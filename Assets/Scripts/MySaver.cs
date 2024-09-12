@@ -32,7 +32,7 @@ public class MySaver : MonoBehaviour
     /// </summary>
     public void GetLoad()
     {
-        score.ScoreCount = YandexGame.savesData.score;
+        score.ScoreCount = YandexGame.savesData.Score;
         score.ScoreChanged = true;
     }
 
@@ -43,7 +43,7 @@ public class MySaver : MonoBehaviour
     {
         yield return new WaitForSeconds(3);
 
-        YandexGame.savesData.score = score.ScoreCount;
+        YandexGame.savesData.Score = score.ScoreCount;
         //save
         YandexGame.SaveProgress();
 
