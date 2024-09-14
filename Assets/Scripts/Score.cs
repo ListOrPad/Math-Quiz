@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using YG;
+using YG.Utils.LB;
 
 public class Score : MonoBehaviour
 {
@@ -10,20 +11,19 @@ public class Score : MonoBehaviour
     [SerializeField] private CanvasGroup[] blocks;
     [SerializeField] private Canvas menuCanvas;
     private Localization localization;
-    private LBPlayerDataYG LBPlayerData;
-    public int ScoreCount { get; set; }
+    public int ScoreCount;
     public bool ScoreChanged { get; set; }
     private int previousRecord;
 
     private void Start()
     {
-        previousRecord = int.Parse(LBPlayerData.data.score);
         localization = GameObject.Find("Game").GetComponent<Localization>();
+
+        YandexGame.onGetLeaderboard += RewriteRecord;
     }
 
     private void Update()
     {
-        ScoreCount += 5;
         if (ScoreChanged)
         {
             WriteScore();
@@ -52,10 +52,14 @@ public class Score : MonoBehaviour
             ScoreCount += quiz.firstNumber + quiz.secondNumber;
             ScoreChanged = true;
         }
-        //Adding score to the leaderboard
-        if(previousRecord < ScoreCount)
+
+        YandexGame.GetLeaderboard("Score", 1000000, 3, 10, "42"); //change parameters to actual data
+        Debug.Log(previousRecord + "is your PREV record");
+        //Adding score to the leaderboard if previous record from the leaderboard is lesser than current Score
+        if (previousRecord < ScoreCount)
         {
             previousRecord = ScoreCount;
+            Debug.Log(previousRecord + "is your NEW record");
             YandexGame.NewLeaderboardScores("Score", ScoreCount);
         }
     }
@@ -108,6 +112,21 @@ public class Score : MonoBehaviour
             blocks[4].alpha = 0;
             blocks[4].interactable = false;
             blocks[4].blocksRaycasts = false;
+        }
+    }
+
+    private void RewriteRecord(LBData lbData)
+    {
+        string currentPlayerId = YandexGame.playerId;
+
+        // Find the current player's data in the leaderboard
+        foreach (var player in lbData.players)
+        {
+            if (player.name == currentPlayerId)
+            {
+                previousRecord = player.score;
+                break;
+            }
         }
     }
 }
