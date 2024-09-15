@@ -78,35 +78,35 @@ public class Score : MonoBehaviour
 
     private void ActivateDifficulties()
     {
-        if (ScoreCount > 500)
+        if (ScoreCount > 444)
         {
             //open difficulty 2
             blocks[0].alpha = 0;
             blocks[0].interactable = false;
             blocks[0].blocksRaycasts = false;
         }
-        if (ScoreCount > 9000)
+        if (ScoreCount > 4444)
         {
             //open difficulty 3
             blocks[1].alpha = 0;
             blocks[1].interactable = false;
             blocks[1].blocksRaycasts = false;
         }
-        if (ScoreCount > 150_000)
+        if (ScoreCount > 44_444)
         {
             //open difficulty 4
             blocks[2].alpha = 0;
             blocks[2].interactable = false;
             blocks[2].blocksRaycasts = false;
         }
-        if (ScoreCount > 1_000_000)
+        if (ScoreCount > 444_444)
         {
             //open difficulty 5
             blocks[3].alpha = 0;
             blocks[3].interactable = false;
             blocks[3].blocksRaycasts = false;
         }
-        if (ScoreCount > 9_000_000)
+        if (ScoreCount > 4_444_444)
         {
             //open victory pic
             blocks[4].alpha = 0;

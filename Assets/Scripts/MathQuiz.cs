@@ -1,6 +1,7 @@
-using TMPro;
+﻿using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using YG;
 
 public class MathQuiz : MonoBehaviour
 {
@@ -33,7 +34,6 @@ public class MathQuiz : MonoBehaviour
         score = GameObject.Find("Score").GetComponent<Score>();
         backToMenuButton.onClick.AddListener(() => ReturnToMainMenu());
         skipButton = GameObject.Find("Skip Button").GetComponent<Button>();
-        skipButton.onClick.AddListener(() => SkipExample());
     }
 
     private void Update()
@@ -405,6 +405,8 @@ public class MathQuiz : MonoBehaviour
         cache.exampleSolved[difficultyIndex] = false;
     }
 
+
+    #region rewarded ad
     private void SkipExample()
     {
         ExampleSkipped = true;
@@ -414,4 +416,32 @@ public class MathQuiz : MonoBehaviour
         WriteExample();
         StartCoroutine(fadingText.WriteRightOrWrong(this, previousResult));
     }
+
+    // Subscribe to the ad opening event in OnEnable
+    private void OnEnable()
+    {
+        YandexGame.RewardVideoEvent += Rewarded;
+    }
+
+    // Unsubscribe from the ad opening event in OnDisable
+    private void OnDisable()
+    {
+        YandexGame.RewardVideoEvent -= Rewarded;
+    }
+
+    // Method subscribed to receive a reward
+    private void Rewarded(int id)
+    {
+        if (id == 1)
+            SkipExample();
+    }
+
+    // Method for calling video ads
+    public void ExampleOpenRewardAd(int id)
+    {
+        // Call the method to open video ads
+        YandexGame.RewVideoShow(id);
+    }
+    #endregion
+    
 }
