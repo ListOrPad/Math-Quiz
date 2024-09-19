@@ -14,6 +14,7 @@ public class Score : MonoBehaviour
     public int ScoreCount;
     public bool ScoreChanged { get; set; }
     private int previousRecord;
+    private int getLeaderboardDelay;
 
     private void Start()
     {
@@ -53,7 +54,13 @@ public class Score : MonoBehaviour
             ScoreChanged = true;
         }
 
-        YandexGame.GetLeaderboard("Score", 1000000, 3, 10, "42"); //change parameters to actual data
+        if (getLeaderboardDelay > 3)
+        {
+            YandexGame.GetLeaderboard("Score", 1000000, 3, 10, "42"); //change parameters to actual data
+            getLeaderboardDelay = 0;
+        }
+        getLeaderboardDelay++;
+
         Debug.Log(previousRecord + "is your PREV record");
         //Adding score to the leaderboard if previous record from the leaderboard is lesser than current Score
         if (previousRecord < ScoreCount)

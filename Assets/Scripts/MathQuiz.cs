@@ -7,7 +7,7 @@ public class MathQuiz : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI exampleText;
     [SerializeField] private FadingText fadingText;
-    [SerializeField] private TMP_InputField resultText;
+    [SerializeField] private InputField resultText;
     [SerializeField] private Button checkButton;
     [SerializeField] private Button backToMenuButton;
     [HideInInspector] public int firstNumber;
@@ -38,6 +38,11 @@ public class MathQuiz : MonoBehaviour
 
     private void Update()
     {
+        if (Input.GetKeyDown(KeyCode.KeypadEnter) || Input.GetKeyDown(KeyCode.Return))
+        {
+            ClickCheckButton();
+        }
+
         if (difficulty.DifficultyChanged)
         {
             WriteExample();
