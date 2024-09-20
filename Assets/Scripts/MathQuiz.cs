@@ -24,6 +24,10 @@ public class MathQuiz : MonoBehaviour
     public bool ExampleSkipped { get; set; }
     private Button skipButton;
 
+    [Header("Audio")]
+    [SerializeField] private AudioClip ApproveSound;
+    [SerializeField] private AudioClip WrongSound;
+
     private void Start()
     {
         difficulty = GetComponent<Difficulty>();
@@ -63,6 +67,8 @@ public class MathQuiz : MonoBehaviour
                 cache.exampleSolved[difficultyIndex] = true;
                 isAnswerCorrect = true;
 
+                SoundManager.Instance.PlaySound(ApproveSound);
+
                 // Generate a new example after solving
                 score.AddScore(this);
                 GetRandomOperation();
@@ -75,6 +81,9 @@ public class MathQuiz : MonoBehaviour
             {
                 // Code to execute if the answer is incorrect
                 isAnswerCorrect = false;
+
+                SoundManager.Instance.PlaySound(WrongSound);
+
                 StartCoroutine(fadingText.WriteRightOrWrong(isAnswerCorrect));
                 Debug.Log("Incorrect answer!");
             }
