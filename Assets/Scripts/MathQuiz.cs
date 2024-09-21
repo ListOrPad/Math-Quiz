@@ -22,11 +22,14 @@ public class MathQuiz : MonoBehaviour
 
     //skipping example(maybe create script smth like "RevAd"?)
     public bool ExampleSkipped { get; set; }
-    private Button skipButton;
 
     [Header("Audio")]
     [SerializeField] private AudioClip ApproveSound;
     [SerializeField] private AudioClip WrongSound;
+
+    //Advertisment
+    private int correctAnswerCounter;
+
 
     private void Start()
     {
@@ -37,7 +40,6 @@ public class MathQuiz : MonoBehaviour
         checkButton.onClick.AddListener(() => ClickCheckButton());
         score = GameObject.Find("Score").GetComponent<Score>();
         backToMenuButton.onClick.AddListener(() => ReturnToMainMenu());
-        skipButton = GameObject.Find("Skip Button").GetComponent<Button>();
     }
 
     private void Update()
@@ -67,6 +69,8 @@ public class MathQuiz : MonoBehaviour
                 cache.exampleSolved[difficultyIndex] = true;
                 isAnswerCorrect = true;
 
+                ShowFullscreenAd();
+
                 SoundManager.Instance.PlaySound(ApproveSound);
 
                 // Generate a new example after solving
@@ -91,6 +95,30 @@ public class MathQuiz : MonoBehaviour
         else
         {
             Debug.LogWarning("Write answer first");
+        }
+    }
+
+    private void ShowFullscreenAd()
+    {
+        correctAnswerCounter++;
+
+        if (correctAnswerCounter >= 25 && Difficulty.currentDifficulty == DifficultyEnum.VeryEasy)
+        {
+            YandexGame.FullscreenShow();
+            correctAnswerCounter = 0;
+        }
+        else if (correctAnswerCounter >= 10 && Difficulty.currentDifficulty == DifficultyEnum.Easy)
+        {
+            YandexGame.FullscreenShow();
+            correctAnswerCounter = 0;
+        }
+        else if (correctAnswerCounter >= 5 && 
+            (Difficulty.currentDifficulty == DifficultyEnum.Normal ||
+             Difficulty.currentDifficulty == DifficultyEnum.Hard ||
+             Difficulty.currentDifficulty == DifficultyEnum.VeryHard))
+        {
+            YandexGame.FullscreenShow();
+            correctAnswerCounter = 0;
         }
     }
 
